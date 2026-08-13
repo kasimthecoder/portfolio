@@ -23,8 +23,8 @@ export default async function Home() {
           />
           <AboutSection about={profile.about} />
           <SkillsSection skills={skills} />
-          {/*<ProjectsSection projects={projects} />
-          <BlogSection posts={blogPosts} />*/}
+          <ProjectsSection projects={projects} />
+          {/* <BlogSection posts={blogPosts} /> */}
           {/* <ExperienceSection /> */}
           <ContactSection
             email={profile.email}
