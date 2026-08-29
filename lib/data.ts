@@ -1,15 +1,31 @@
 import { blogPosts, profile, projects, skills } from "@/lib/portfolio";
 import { prisma } from "@/lib/prisma";
 
+export type PortfolioProfile = {
+  name: string;
+  title: string;
+  location: string;
+  about: string;
+  email: string;
+  github: string;
+  linkedin: string;
+};
+
 export type PortfolioProject = {
   id?: string;
   name: string;
   description: string;
   stack: string[];
+  highlights?: string[];
+  links?: {
+    live?: string;
+    github?: string;
+    details?: string;
+  };
 };
 
 export type PortfolioData = {
-  profile: typeof profile;
+  profile: PortfolioProfile;
   skills: string[];
   projects: PortfolioProject[];
   blogPosts: typeof blogPosts;
@@ -38,8 +54,10 @@ export async function getPortfolioData(): Promise<PortfolioData> {
       }),
     ]);
 
+    const safeStoredProfile = storedProfile as Partial<PortfolioProfile> | null;
+
     return {
-      profile: storedProfile ?? profile,
+      profile: safeStoredProfile ? { ...profile, ...safeStoredProfile } : profile,
       skills: storedSkills.length ? storedSkills.map((skill) => skill.name) : skills,
       projects: storedProjects.length ? storedProjects : projects,
       blogPosts,
@@ -81,9 +99,11 @@ export async function getDashboardData() {
       }),
     ]);
 
+    const safeStoredProfile = storedProfile as Partial<PortfolioProfile> | null;
+
     return {
       isDatabaseReady: true,
-      profile: storedProfile ?? profile,
+      profile: safeStoredProfile ? { ...profile, ...safeStoredProfile } : profile,
       skills: storedSkills,
       projects: storedProjects,
     };

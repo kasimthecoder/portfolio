@@ -6,18 +6,27 @@ export function Section({
   children,
 }: {
   id: string;
-  label: string;
+  label?: string;
   children: ReactNode;
 }) {
   return (
-    <section id={id} aria-labelledby={`${id}-heading`} className="py-12 sm:py-16">
+    <section
+      id={id}
+      aria-labelledby={`${id}-heading`}
+      className="border-t border-white/10 py-16 sm:py-20"
+    >
       <h2 id={`${id}-heading`} className="sr-only">
-        {label}
+        {label ?? id}
       </h2>
-      <p className="mb-5 text-[11px] font-medium uppercase tracking-[0.16em] text-white/50">
-        {label}
-      </p>
-      {children}
+
+      <div className="mx-auto max-w-[1220px]">
+        {label ? (
+          <p className="mb-8 text-[10px] font-medium uppercase tracking-[0.22em] text-[#a29b93]">
+            {label}
+          </p>
+        ) : null}
+        {children}
+      </div>
     </section>
   );
 }
