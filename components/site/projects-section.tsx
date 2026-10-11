@@ -1,77 +1,53 @@
 import { Section } from "@/components/site/section";
 import type { PortfolioProject } from "@/lib/data";
 
-type ProjectsSectionProps = {
-  projects: PortfolioProject[];
-};
+type ProjectsSectionProps = { projects: PortfolioProject[] };
+
+function ProjectVisual({ name, number }: { name: string; number: number }) {
+  const isFeedback = /feedback/i.test(name);
+  const isCms = /cms/i.test(name);
+  return (
+    <div className={`project-visual visual-${number}`} role="img" aria-label={`Editorial visual study for ${name}, based on its project description`}>
+      <div className="project-visual-inner">
+        <p className="visual-kicker mono">{name}</p>
+        <p className="visual-big">{isFeedback ? <>Make room<br />for feedback.</> : isCms ? <>Content,<br />with structure.</> : <>A clearer view<br />of the week.</>}</p>
+        <div className="visual-lines" aria-hidden="true"><span /><span /><span /></div>
+        <div className={isFeedback ? "visual-columns" : "visual-timetable"} aria-hidden="true">
+          {Array.from({ length: isFeedback ? 2 : 8 }, (_, index) => <span key={index} />)}
+        </div>
+      </div>
+      <span className="visual-label mono">Visual study · {String(number).padStart(2, "0")}</span>
+    </div>
+  );
+}
 
 export function ProjectsSection({ projects }: ProjectsSectionProps) {
+  const prioritized = ["KyroFeedback", "KyroCMS", "JUClasses"];
+  const sorted = [...projects].sort((a, b) => {
+    const aIndex = prioritized.indexOf(a.name);
+    const bIndex = prioritized.indexOf(b.name);
+    return (aIndex < 0 ? 99 : aIndex) - (bIndex < 0 ? 99 : bIndex);
+  });
+
   return (
-    <Section id="work" label="Work">
-      <div className="space-y-0">
-        {projects.map((project) => (
-          <article
-            key={project.id ?? project.name}
-            className="border-t border-white/10 py-8 transition-colors duration-300 first:border-t-0 first:pt-0"
-          >
-            <div className="grid gap-5 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
-              <div className="space-y-4">
-                <div className="flex flex-wrap items-center gap-3">
-                  {project.links?.github ? (
-                    <a
-                      href={project.links.github}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-2 text-2xl font-medium tracking-[-0.06em] text-[#f4efe9] transition-colors duration-300 hover:text-white sm:text-3xl"
-                    >
-                      <span>{project.name}</span>
-                      <span className="text-base text-[#a29b93] transition-colors duration-300 hover:text-white">
-                        ↗
-                      </span>
-                    </a>
-                  ) : (
-                    <h2 className="text-2xl font-medium tracking-[-0.06em] text-[#f4efe9] sm:text-3xl">
-                      {project.name}
-                    </h2>
-                  )}
-
-                  <span className="text-[10px] uppercase tracking-[0.2em] text-[#8d857d]">
-                    2026
-                  </span>
-                </div>
-
-                <p className="max-w-2xl text-base leading-7 text-[#c7c0b8]">
-                  {project.description}
-                </p>
+    <Section id="work" index="01" title="Selected work" note="Independent projects, each shaped around a practical need and a clear way to use it.">
+      {sorted.map((project, index) => (
+        <article className="project" key={project.id ?? project.name}>
+          <ProjectVisual name={project.name} number={index + 1} />
+          <div className="project-copy">
+            <p className="project-meta"><span className="number">{String(index + 1).padStart(2, "0")}</span><span>{/classes/i.test(project.name) ? "Education · Scheduling" : /cms/i.test(project.name) ? "Developer tools · CMS" : /feedback/i.test(project.name) ? "Product tools · Feedback" : "Product engineering"}</span></p>
+            <h3>{project.name}</h3>
+            <p className="project-description">{project.description}</p>
+            {project.stack.length ? <p className="project-stack mono">{project.stack.join(" · ")}</p> : null}
+            {project.links?.live || project.links?.github ? (
+              <div className="project-links">
+                {project.links.live ? <a href={project.links.live} target="_blank" rel="noreferrer">Visit project <span aria-hidden="true">↗</span></a> : null}
+                {project.links.github && !project.links.github.endsWith("/kasimthecoder") ? <a href={project.links.github} target="_blank" rel="noreferrer">Source code <span aria-hidden="true">↗</span></a> : null}
               </div>
-
-              <div className="space-y-3 lg:text-right">
-                <div className="flex flex-wrap gap-2 lg:justify-end">
-                  {project.stack.map((item) => (
-                    <span
-                      key={`${project.name}-${item}`}
-                      className="text-[10px] uppercase tracking-[0.18em] text-[#8d857d]"
-                    >
-                      {item}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {project.highlights && (
-              <ul className="mt-6 space-y-3 text-sm leading-6 text-[#c7c0b8]">
-                {project.highlights.map((highlight) => (
-                  <li key={highlight} className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-[#d3a97f]" />
-                    <span>{highlight}</span>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </article>
-        ))}
-      </div>
+            ) : null}
+          </div>
+        </article>
+      ))}
     </Section>
   );
 }

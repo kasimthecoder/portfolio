@@ -7,7 +7,7 @@ type BlogSectionProps = {
 
 export function BlogSection({ posts }: BlogSectionProps) {
   return (
-    <Section id="blog" label="Blog">
+    <Section id="blog" index="06" title="Writing">
       <div className="space-y-9">
         {posts.map((post) => (
           <article key={post.title} className="space-y-2">

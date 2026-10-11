@@ -1,28 +1,22 @@
 import { Section } from "@/components/site/section";
 
-const experience = [
-  { year: "2026", title: "KyroFeedback", detail: "Product / Engineering" },
-  { year: "2026", title: "KyroCMS", detail: "Product / Engineering" },
-  { year: "2026", title: "JUClasses", detail: "Product / Engineering" },
+const steps = [
+  { title: "Understand", text: "Start with the people using it and the problem they need solved." },
+  { title: "Shape", text: "Give the product a clear structure before adding complexity." },
+  { title: "Build", text: "Connect considered interfaces with dependable systems underneath." },
+  { title: "Improve", text: "Ship, learn from use, and make the next version more useful." },
 ];
 
 export function ExperienceSection() {
   return (
-    <Section id="experience" label="Experience">
-      <div className="space-y-0">
-        {experience.map((item) => (
-          <div
-            key={item.title}
-            className="grid gap-4 border-t border-white/10 py-6 first:border-t-0 first:pt-0 md:grid-cols-[120px_1fr_200px] md:items-start"
-          >
-            <p className="text-[10px] uppercase tracking-[0.2em] text-[#8d857d]">{item.year}</p>
-            <h3 className="text-xl font-medium tracking-[-0.04em] text-[#f4efe9]">
-              {item.title}
-            </h3>
-            <p className="text-sm uppercase tracking-[0.16em] text-[#a29b93] md:text-right">
-              {item.detail}
-            </p>
-          </div>
+    <Section id="approach" index="02" title="How I build" note="A product-minded approach, from understanding the need to improving what ships.">
+      <div className="approach-grid">
+        {steps.map((step, index) => (
+          <article key={step.title} className="approach-step">
+            <span className="step-no">0{index + 1}</span>
+            <h3>{step.title}</h3>
+            <p>{step.text}</p>
+          </article>
         ))}
       </div>
     </Section>

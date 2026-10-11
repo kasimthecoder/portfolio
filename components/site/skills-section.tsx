@@ -1,25 +1,21 @@
 import { Section } from "@/components/site/section";
 
-type SkillsSectionProps = {
-  skills: string[];
-};
+type SkillsSectionProps = { skills: string[] };
 
 export function SkillsSection({ skills }: SkillsSectionProps) {
   const groups = [
-    { label: "Frontend", items: skills.filter((skill) => ["React", "Next.js", "Svelte", "HTML", "CSS", "Tailwind CSS", "UI Systems"].includes(skill)) },
-    { label: "Backend", items: skills.filter((skill) => ["Node.js", "Python", "PostgreSQL", "Prisma", "Product Engineering"].includes(skill)) },
-    { label: "Languages", items: skills.filter((skill) => ["JavaScript", "TypeScript", "Python"].includes(skill)) },
-  ];
+    { label: "Frontend", match: ["React", "Next.js", "Svelte", "JavaScript", "TypeScript", "Tailwind CSS", "UI Systems"] },
+    { label: "Backend & data", match: ["Node.js", "Python", "PostgreSQL", "Prisma"] },
+    { label: "Product & practice", match: ["Product Engineering"] },
+  ].map((group) => ({ ...group, items: skills.filter((skill) => group.match.includes(skill)) })).filter((group) => group.items.length);
 
   return (
-    <Section id="skills" label="Skills">
-      <div className="grid gap-8 md:grid-cols-3">
+    <Section id="skills" index="04" title="Tools & practice" note="A concise set of tools used to take products from interface to data layer.">
+      <div className="skills-list">
         {groups.map((group) => (
-          <div key={group.label} className="space-y-4">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-[#a29b93]">{group.label}</p>
-            <p className="text-base leading-7 text-[#c7c0b8]">
-              {group.items.join(" · ")}
-            </p>
+          <div className="skill-row" key={group.label}>
+            <h3>{group.label}</h3>
+            <p>{group.items.join(" · ")}</p>
           </div>
         ))}
       </div>
