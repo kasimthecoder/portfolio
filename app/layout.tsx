@@ -1,47 +1,50 @@
 import type { Metadata } from "next";
 
+import { HOME_URL, SITE_ORIGIN } from "@/lib/seo";
 import "./globals.css";
 
+const googleVerification = process.env.GOOGLE_SITE_VERIFICATION;
+const bingVerification = process.env.BING_SITE_VERIFICATION;
+
 export const metadata: Metadata = {
-  title: "Kasim Saifi — Independent Developer & Product Builder",
+  metadataBase: new URL(SITE_ORIGIN),
+  title: "Kasim Saifi — Full-Stack Developer & Product Builder",
   description:
-    "Kasim Saifi is an independent full-stack developer in India building practical software products and thoughtful digital experiences.",
-  keywords: [
-    "Kasim Saifi",
-    "Full Stack Developer",
-    "Product Builder",
-    "Next.js Developer",
-    "React Developer",
-    "TypeScript Developer",
-    "India",
-  ],
+    "Explore Kasim Saifi’s software projects, full-stack development work, developer tools, and approach to building useful digital products.",
   authors: [{ name: "Kasim Saifi" }],
   creator: "Kasim Saifi",
-  metadataBase: new URL("https://www.kasimsaifi.in"),
+  alternates: { canonical: HOME_URL },
+  robots: { index: true, follow: true },
   openGraph: {
-    title: "Kasim Saifi — Independent Developer & Product Builder",
+    title: "Kasim Saifi — Full-Stack Developer & Product Builder",
     description:
-      "Software, products and thoughtful digital experiences, made to solve actual problems.",
-    url: "https://www.kasimsaifi.in",
+      "Explore Kasim Saifi’s software projects, full-stack development work, developer tools, and approach to building useful digital products.",
+    url: HOME_URL,
     siteName: "Kasim Saifi",
     locale: "en_IN",
     type: "website",
   },
   twitter: {
     card: "summary",
-    title: "Kasim Saifi — Independent Developer & Product Builder",
+    title: "Kasim Saifi — Full-Stack Developer & Product Builder",
     description:
-      "Software, products and thoughtful digital experiences, made to solve actual problems.",
+      "Explore Kasim Saifi’s software projects, full-stack development work, developer tools, and approach to building useful digital products.",
   },
-  robots: { index: true, follow: true },
+  ...(googleVerification || bingVerification
+    ? {
+        verification: {
+          ...(googleVerification ? { google: googleVerification } : {}),
+          ...(bingVerification
+            ? { other: { "msvalidate.01": bingVerification } }
+            : {}),
+        },
+      }
+    : {}),
 };
-
-const themeScript = `(()=>{try{const saved=localStorage.getItem("portfolio-theme");if(saved==="light"||saved==="dark")document.documentElement.dataset.theme=saved}catch{}})()`;
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head><script dangerouslySetInnerHTML={{ __html: themeScript }} /></head>
+    <html lang="en">
       <body>{children}</body>
     </html>
   );

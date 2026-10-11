@@ -1,53 +1,37 @@
 import { Section } from "@/components/site/section";
-import type { PortfolioProject } from "@/lib/data";
+import type { Project } from "@/lib/data";
 
-type ProjectsSectionProps = { projects: PortfolioProject[] };
-
-function ProjectVisual({ name, number }: { name: string; number: number }) {
-  const isFeedback = /feedback/i.test(name);
-  const isCms = /cms/i.test(name);
-  return (
-    <div className={`project-visual visual-${number}`} role="img" aria-label={`Editorial visual study for ${name}, based on its project description`}>
-      <div className="project-visual-inner">
-        <p className="visual-kicker mono">{name}</p>
-        <p className="visual-big">{isFeedback ? <>Make room<br />for feedback.</> : isCms ? <>Content,<br />with structure.</> : <>A clearer view<br />of the week.</>}</p>
-        <div className="visual-lines" aria-hidden="true"><span /><span /><span /></div>
-        <div className={isFeedback ? "visual-columns" : "visual-timetable"} aria-hidden="true">
-          {Array.from({ length: isFeedback ? 2 : 8 }, (_, index) => <span key={index} />)}
-        </div>
-      </div>
-      <span className="visual-label mono">Visual study · {String(number).padStart(2, "0")}</span>
-    </div>
-  );
-}
+type ProjectsSectionProps = { projects: Project[] };
 
 export function ProjectsSection({ projects }: ProjectsSectionProps) {
-  const prioritized = ["KyroFeedback", "KyroCMS", "JUClasses"];
-  const sorted = [...projects].sort((a, b) => {
-    const aIndex = prioritized.indexOf(a.name);
-    const bIndex = prioritized.indexOf(b.name);
-    return (aIndex < 0 ? 99 : aIndex) - (bIndex < 0 ? 99 : bIndex);
-  });
-
   return (
-    <Section id="work" index="01" title="Selected work" note="Independent projects, each shaped around a practical need and a clear way to use it.">
-      {sorted.map((project, index) => (
-        <article className="project" key={project.id ?? project.name}>
-          <ProjectVisual name={project.name} number={index + 1} />
-          <div className="project-copy">
-            <p className="project-meta"><span className="number">{String(index + 1).padStart(2, "0")}</span><span>{/classes/i.test(project.name) ? "Education · Scheduling" : /cms/i.test(project.name) ? "Developer tools · CMS" : /feedback/i.test(project.name) ? "Product tools · Feedback" : "Product engineering"}</span></p>
-            <h3>{project.name}</h3>
-            <p className="project-description">{project.description}</p>
-            {project.stack.length ? <p className="project-stack mono">{project.stack.join(" · ")}</p> : null}
-            {project.links?.live || project.links?.github ? (
-              <div className="project-links">
-                {project.links.live ? <a href={project.links.live} target="_blank" rel="noreferrer">Visit project <span aria-hidden="true">↗</span></a> : null}
-                {project.links.github && !project.links.github.endsWith("/kasimthecoder") ? <a href={project.links.github} target="_blank" rel="noreferrer">Source code <span aria-hidden="true">↗</span></a> : null}
-              </div>
-            ) : null}
-          </div>
-        </article>
-      ))}
+    <Section id="work" index="01" title="Selected work" note="Independent products built around practical needs and clear ways to use them.">
+      <div className="projects-list">
+        {projects.map((project) => (
+          <article className="project" data-reveal key={project.id}>
+            <div className="project-heading">
+              <p className="project-meta mono"><span className="number">{project.number}</span><span>{project.category}</span></p>
+              <h3>{project.title}</h3>
+              {project.status ? <p className="project-status mono">{project.status}</p> : null}
+            </div>
+            <div className="project-copy">
+              <p className="project-description">{project.description}</p>
+              {project.highlights?.length ? (
+                <ul className="project-highlights">
+                  {project.highlights.map((highlight) => <li key={highlight}>{highlight}</li>)}
+                </ul>
+              ) : null}
+              <p className="project-stack mono"><span className="visually-hidden">Technologies: </span>{project.technologies.join(" · ")}</p>
+              {project.liveUrl || project.githubUrl ? (
+                <div className="project-links">
+                  {project.liveUrl ? <a href={project.liveUrl} target="_blank" rel="noreferrer">Visit project <span aria-hidden="true">↗</span></a> : null}
+                  {project.githubUrl ? <a href={project.githubUrl} target="_blank" rel="noreferrer">Source code <span aria-hidden="true">↗</span></a> : null}
+                </div>
+              ) : null}
+            </div>
+          </article>
+        ))}
+      </div>
     </Section>
   );
 }

@@ -13,7 +13,6 @@ const eslintConfig = [
   {
     ignores: [
       ".next/**",
-      "lib/generated/prisma/**",
       "next-env.d.ts",
       "node_modules/**",
     ],

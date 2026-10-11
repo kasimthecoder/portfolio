@@ -3,13 +3,22 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   outputFileTracingRoot: __dirname,
   reactStrictMode: true,
-  images: {
-    remotePatterns: [
+  trailingSlash: true,
+  async redirects() {
+    return [
       {
-        protocol: "https",
-        hostname: "images.unsplash.com",
+        source: "/",
+        has: [{ type: "host", value: "kasimsaifi.in" }],
+        destination: "https://www.kasimsaifi.in/",
+        permanent: true,
       },
-    ],
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "kasimsaifi.in" }],
+        destination: "https://www.kasimsaifi.in/:path*",
+        permanent: true,
+      },
+    ];
   },
 };
 

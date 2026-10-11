@@ -1,37 +1,40 @@
 # Kasim Saifi Portfolio
 
-A minimal black-and-white personal portfolio built with Next.js 15, TypeScript, Tailwind CSS, shadcn/ui conventions, Prisma, and PostgreSQL.
+A Swiss editorial portfolio built with Next.js 15 and TypeScript. Portfolio content is defined in `lib/data.ts`.
 
 ## Getting Started
 
 ```bash
 bun install
-bun run db:generate
 bun run dev
 ```
 
 Open `http://localhost:3000` to view the site.
 
-## Database
+## Content
 
-This project uses Prisma with PostgreSQL for portfolio profile, skills, and projects.
+Edit projects, profile details, navigation, skills, process steps, and static blog entries in `lib/data.ts`.
 
-1. Copy `.env.example` to `.env`.
-2. Update `DATABASE_URL`.
-3. Set `DASHBOARD_PASSWORD` and `DASHBOARD_SESSION_SECRET`.
-4. Run:
+## Search visibility
 
-```bash
-bun run db:migrate
-```
+- The canonical production origin is `https://www.kasimsaifi.in/`.
+- `app/robots.ts` allows crawlers and points to `app/sitemap.ts`.
+- The sitemap contains only the indexable homepage. `/blog` is intentionally `noindex` while it contains summaries without full article pages.
+- The homepage’s Person, ProfilePage, WebSite, and project SoftwareApplication JSON-LD is rendered from the same static profile and project data as the visible page.
+- No analytics scripts or search-engine credentials are committed.
 
-The portfolio falls back to local placeholder content if the database is not configured yet.
+To enable HTML-tag ownership verification, add `GOOGLE_SITE_VERIFICATION` and/or `BING_SITE_VERIFICATION` to the production environment using the token value supplied by each service, then rebuild and deploy. These values are emitted only in the corresponding public verification meta tag. DNS verification does not require an environment variable.
+
+In Google Search Console, add the `https://www.kasimsaifi.in/` URL-prefix property (or verify the `kasimsaifi.in` Domain property via DNS), then submit `https://www.kasimsaifi.in/sitemap.xml`. Inspect the homepage and review indexing, query, click, impression, CTR, and position reports after data becomes available.
+
+In Bing Webmaster Tools, add the canonical site, verify it using DNS or the HTML-tag value, and submit the same sitemap URL. Review URL inspection, crawl/indexing reports, and query impressions, clicks, CTR, and position there.
+
+Verification, sitemap submission, and URL inspection do not guarantee indexing or ranking. The repository has no Search Console or Bing account credentials, so those account steps remain manual.
 
 ## Routes
 
 - `/` is the public portfolio.
-- `/dashboard` manages profile, skills, and projects from Postgres.
-- `/blog` is UI-only placeholder content for future blog data.
+- `/blog` displays the static writing entries from `lib/data.ts`.
 
 ## Scripts
 
@@ -39,7 +42,4 @@ The portfolio falls back to local placeholder content if the database is not con
 - `bun run build` creates a production build.
 - `bun run start` serves the production build.
 - `bun run typecheck` runs TypeScript checks.
-- `bun run db:generate` generates the Prisma client.
-- `bun run db:migrate` runs Prisma migrations.
-- `bun run db:studio` opens Prisma Studio.
 # portfolio

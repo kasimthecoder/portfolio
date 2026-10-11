@@ -15,7 +15,7 @@ export function Section({
 }) {
   return (
     <section id={id} className="editorial-section wrap" aria-labelledby={`${id}-heading`}>
-      <div className="section-head">
+      <div className="section-head" data-reveal>
         <div>
           <p className="section-index">{index} / {title}</p>
           <h2 id={`${id}-heading`} className="section-title">{title}</h2>

@@ -1,6 +1,5 @@
 node_modules
 .next
-lib/generated/prisma
 out
 dist
 build

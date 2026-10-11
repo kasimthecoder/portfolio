@@ -3,7 +3,7 @@ type ContactSectionProps = { email: string; github: string; linkedin: string };
 export function ContactSection({ email, github, linkedin }: ContactSectionProps) {
   return (
     <section id="contact" className="contact-section wrap" aria-labelledby="contact-heading">
-      <div className="contact-grid">
+      <div className="contact-grid" data-reveal>
         <div>
           <p className="section-index">05 / CONTACT</p>
           <h2 id="contact-heading" className="contact-title">Let&apos;s make something useful.</h2>
